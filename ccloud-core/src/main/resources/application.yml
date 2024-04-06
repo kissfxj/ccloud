@@ -1,0 +1,48 @@
+server:
+  port: 8080
+  tomcat:
+    #tomcat的url编码为utf-8，解决中文乱码的问题。
+    uri-encoding: utf-8
+    #tomcat允许的post最大值为1GB
+    max-http-form-post-size: 1073741824
+  servlet:
+    context-path: /ccloud
+
+
+spring:
+  cache:
+    redis:
+      time-to-live: 10s
+      key-prefix: 'c-cloud_'
+    type: redis
+  application:
+    name: ccloud-main
+  profiles:
+    include: db,shiro,shiro-pc,shiro-client
+  jackson:
+#     常用请求与响应自动转下划线，空值字段不传输
+    #    property-naming-strategy: SNAKE_CASE  #此配置不可，打开后 RequestBody不正常，必须使用下划线传值
+    default-property-inclusion: non_null
+
+#mybatis-plus
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+    banner: false
+  mapper-locations: classpath*:com/ccloud/main/mapper/xml/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+swagger:
+  enabled: true
+
+system:
+ log:
+   queue:
+     maxsize: 5000
+     default:
+       handle:
+         size: 2
+         time: 300000
+
